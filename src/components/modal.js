@@ -22,7 +22,6 @@ export const openImagePopup = (cardData) => {
 };
 
 
-
 // @todo: Открытие попапа добавления карточки
 export const openAddCardPopup = () => {
   const popupAddCard = document.querySelector('.popup_type_new-card');
@@ -31,8 +30,9 @@ export const openAddCardPopup = () => {
 
 
 
+
 // @todo: Закрытие попапа
-export const closePopup = (popup) => {
+export const hidePopup = (popup) => {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', closePopupOnEsc);
   setTimeout(() => {
@@ -43,7 +43,7 @@ export const closePopup = (popup) => {
 // @todo: Закрытие попапа через ESC
 const closePopupOnEsc = (event) => {
   event.key === 'Escape'
-    ? closePopup(document.querySelector('.popup_is-opened'))
+    ? hidePopup(document.querySelector('.popup_is-opened'))
     : null;
 };
 
@@ -52,14 +52,14 @@ export const initPopupCloseEvents = () => {
   const popupCloseButtons = document.querySelectorAll('.popup__close');
   popupCloseButtons.forEach((button) => {
     button.addEventListener('click', (event) => {
-      closePopup(event.target.closest('.popup'));
+      hidePopup(event.target.closest('.popup'));
     });
   });
 
   document.querySelectorAll('.popup').forEach((popup) => {
     popup.addEventListener('click', (event) => {
       event.target === popup 
-      ? closePopup(popup) 
+      ? hidePopup(popup) 
       : null;
     });
   });

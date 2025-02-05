@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards';
 import { addCard, deleteCard, handleLikeClick } from '../components/card';
-import { openPopup, closePopup, openImagePopup, openAddCardPopup, initPopupCloseEvents } from '../components/modal';
+import { openPopup, hidePopup, openImagePopup, openAddCardPopup, initPopupCloseEvents } from '../components/modal';
 import logo from '../images/logo.svg';
 import avatar from '../images/avatar.jpg';
 
@@ -46,7 +46,7 @@ const handleEditFormSubmit = (evt) => {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
-  closePopup(popupEdit);
+  hidePopup(popupEdit);
 };
 
 formElement.addEventListener('submit', handleEditFormSubmit);
@@ -72,7 +72,7 @@ const handleAddCardSubmit = (evt) => {
   );
 
   cardsListElement.prepend(newCard);
-  closePopup(document.querySelector('.popup_type_new-card'));
+  hidePopup(document.querySelector('.popup_type_new-card'));
 };
 
 formAddCard.addEventListener('submit', handleAddCardSubmit);
