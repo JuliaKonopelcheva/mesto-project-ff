@@ -7,6 +7,30 @@ export const openPopup = (popup) => {
   }, 10);
 };
 
+
+
+// @todo: Открытие попапа с изображением
+export const openImagePopup = (cardData) => {
+  const popupImage = document.querySelector('.popup_type_image');
+  const popupImageElement = popupImage.querySelector('.popup__image');
+  const popupCaption = popupImage.querySelector('.popup__caption');
+
+  popupImageElement.src = cardData.link;
+  popupImageElement.alt = cardData.name;
+  popupCaption.textContent = cardData.name;
+  openPopup(popupImage);
+};
+
+
+
+// @todo: Открытие попапа добавления карточки
+export const openAddCardPopup = () => {
+  const popupAddCard = document.querySelector('.popup_type_new-card');
+  openPopup(popupAddCard);
+};
+
+
+
 // @todo: Закрытие попапа
 export const closePopup = (popup) => {
   popup.classList.remove('popup_is-opened');
@@ -16,9 +40,27 @@ export const closePopup = (popup) => {
   }, 600);
 };
 
-// @todo: Закрытие попапа по ESC
+// @todo: Закрытие попапа через ESC
 const closePopupOnEsc = (event) => {
   event.key === 'Escape'
     ? closePopup(document.querySelector('.popup_is-opened'))
     : null;
+};
+
+// @todo: Закрытие попапов
+export const initPopupCloseEvents = () => {
+  const popupCloseButtons = document.querySelectorAll('.popup__close');
+  popupCloseButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      closePopup(event.target.closest('.popup'));
+    });
+  });
+
+  document.querySelectorAll('.popup').forEach((popup) => {
+    popup.addEventListener('click', (event) => {
+      event.target === popup 
+      ? closePopup(popup) 
+      : null;
+    });
+  });
 };

@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards';
 import { addCard, deleteCard, handleLikeClick } from '../components/card';
-import { openPopup, closePopup } from '../components/modal';
+import { openPopup, closePopup, openImagePopup, openAddCardPopup, initPopupCloseEvents } from '../components/modal';
 import logo from '../images/logo.svg';
 import avatar from '../images/avatar.jpg';
 
@@ -12,19 +12,18 @@ document.querySelector('.profile__image').style.backgroundImage = `url(${avatar}
 // @todo: DOM узлы
 const cardsListElement = document.querySelector('.places__list');
 const popupEdit = document.querySelector('.popup_type_edit');
-const popupAddCard = document.querySelector('.popup_type_new-card');
-const popupImage = document.querySelector('.popup_type_image');
 const formElement = document.querySelector('.popup__form[name="edit-profile"]');
-const formAddCard = popupAddCard.querySelector('.popup__form');
+const formAddCard = document.querySelector('.popup_type_new-card .popup__form');
 const btnEditProfile = document.querySelector('.profile__edit-button');
 const btnAddCard = document.querySelector('.profile__add-button');
-const popupCloseButtons = document.querySelectorAll('.popup__close');
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((cardData) => {
   const cardElement = addCard(cardData, deleteCard, handleLikeClick, openImagePopup);
   cardsListElement.append(cardElement);
 });
+
+
 
 // @todo: Открытие попапа редактирования профиля
 const profileTitle = document.querySelector('.profile__title');
@@ -52,23 +51,10 @@ const handleEditFormSubmit = (evt) => {
 
 formElement.addEventListener('submit', handleEditFormSubmit);
 
-// @todo: Попап с изображением
-const popupImageElement = popupImage.querySelector('.popup__image');
-const popupCaption = popupImage.querySelector('.popup__caption');
 
-// @todo: Открытие попапа с изображением
-const openImagePopup = (cardData) => {
-  popupImageElement.src = cardData.link;
-  popupImageElement.alt = cardData.name;
-  popupCaption.textContent = cardData.name;
-  openPopup(popupImage);
-};
+
 
 // @todo: Открытие попапа добавления карточки
-const openAddCardPopup = () => {
-  openPopup(popupAddCard);
-};
-
 btnAddCard.addEventListener('click', openAddCardPopup);
 
 // @todo: Обработчик события submit (сохранение новой карточки)
@@ -86,21 +72,12 @@ const handleAddCardSubmit = (evt) => {
   );
 
   cardsListElement.prepend(newCard);
-  closePopup(popupAddCard);
+  closePopup(document.querySelector('.popup_type_new-card'));
 };
 
 formAddCard.addEventListener('submit', handleAddCardSubmit);
 
+
+
 // @todo: Закрытие попапов
-popupCloseButtons.forEach((button) => {
-  button.addEventListener('click', (event) => {
-    closePopup(event.target.closest('.popup'));
-  });
-});
-
-document.querySelectorAll('.popup').forEach((popup) => {
-  popup.addEventListener('click', (event) => {
-    event.target === popup ? closePopup(popup) : null;
-  });
-});
-
+initPopupCloseEvents();
