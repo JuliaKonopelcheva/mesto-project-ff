@@ -1,21 +1,32 @@
 import '../pages/index.css';
 import { initialCards } from './cards';
 import { addCard, deleteCard, handleLikeClick } from '../components/card';
-import { openPopup, hidePopup, openImagePopup, openAddCardPopup, initPopupCloseEvents } from '../components/modal';
+import { openPopup, hidePopup, initPopupCloseEvents } from '../components/modal';
 import logo from '../images/logo.svg';
 import avatar from '../images/avatar.jpg';
 
-// @todo: Установка изображений логотипа и аватара
-document.querySelector('.header__logo').src = logo;
-document.querySelector('.profile__image').style.backgroundImage = `url(${avatar})`;
 
 // @todo: DOM узлы
 const cardsListElement = document.querySelector('.places__list');
 const popupEdit = document.querySelector('.popup_type_edit');
-const formElement = document.querySelector('.popup__form[name="edit-profile"]');
+const popupAddCard = document.querySelector('.popup_type_new-card');
+const popupImage = document.querySelector('.popup_type_image');
+const formEditProfile = document.querySelector('.popup__form[name="edit-profile"]');
 const formAddCard = document.querySelector('.popup_type_new-card .popup__form');
 const btnEditProfile = document.querySelector('.profile__edit-button');
 const btnAddCard = document.querySelector('.profile__add-button');
+
+// @todo: Попап с изображением
+const popupImageElement = popupImage.querySelector('.popup__image');
+const popupCaption = popupImage.querySelector('.popup__caption');
+
+// @todo: Открытие попапа с изображением
+const openImagePopup = (cardData) => {
+  popupImageElement.src = cardData.link;
+  popupImageElement.alt = cardData.name;
+  popupCaption.textContent = cardData.name;
+  openPopup(popupImage);
+};
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((cardData) => {
@@ -23,16 +34,12 @@ initialCards.forEach((cardData) => {
   cardsListElement.append(cardElement);
 });
 
-
-
 // @todo: Открытие попапа редактирования профиля
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+const nameInput = formEditProfile.querySelector('.popup__input_type_name');
+const jobInput = formEditProfile.querySelector('.popup__input_type_description');
 
-const nameInput = formElement.querySelector('.popup__input_type_name');
-const jobInput = formElement.querySelector('.popup__input_type_description');
-
-// @todo: Внесение в форму данных со страницы
 const openEditPopup = () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
@@ -49,12 +56,14 @@ const handleEditFormSubmit = (evt) => {
   hidePopup(popupEdit);
 };
 
-formElement.addEventListener('submit', handleEditFormSubmit);
-
-
-
+formEditProfile.addEventListener('submit', handleEditFormSubmit);
 
 // @todo: Открытие попапа добавления карточки
+const openAddCardPopup = () => {
+  formAddCard.reset();
+  openPopup(popupAddCard);
+};
+
 btnAddCard.addEventListener('click', openAddCardPopup);
 
 // @todo: Обработчик события submit (сохранение новой карточки)
@@ -72,12 +81,11 @@ const handleAddCardSubmit = (evt) => {
   );
 
   cardsListElement.prepend(newCard);
-  hidePopup(document.querySelector('.popup_type_new-card'));
+  formAddCard.reset();
+  hidePopup(popupAddCard);
 };
 
 formAddCard.addEventListener('submit', handleAddCardSubmit);
-
-
 
 // @todo: Закрытие попапов
 initPopupCloseEvents();

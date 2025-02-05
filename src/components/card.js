@@ -29,4 +29,3 @@ export const deleteCard = (cardElement) => {
 export const handleLikeClick = (event) => {
   event.target.classList.toggle('card__like-button_is-active');
 };
-

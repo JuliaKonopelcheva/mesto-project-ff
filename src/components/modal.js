@@ -7,30 +7,6 @@ export const openPopup = (popup) => {
   }, 10);
 };
 
-
-
-// @todo: Открытие попапа с изображением
-export const openImagePopup = (cardData) => {
-  const popupImage = document.querySelector('.popup_type_image');
-  const popupImageElement = popupImage.querySelector('.popup__image');
-  const popupCaption = popupImage.querySelector('.popup__caption');
-
-  popupImageElement.src = cardData.link;
-  popupImageElement.alt = cardData.name;
-  popupCaption.textContent = cardData.name;
-  openPopup(popupImage);
-};
-
-
-// @todo: Открытие попапа добавления карточки
-export const openAddCardPopup = () => {
-  const popupAddCard = document.querySelector('.popup_type_new-card');
-  openPopup(popupAddCard);
-};
-
-
-
-
 // @todo: Закрытие попапа
 export const hidePopup = (popup) => {
   popup.classList.remove('popup_is-opened');
