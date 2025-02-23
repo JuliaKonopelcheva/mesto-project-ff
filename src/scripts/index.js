@@ -2,9 +2,7 @@ import '../pages/index.css';
 import { initialCards } from './cards';
 import { addCard, deleteCard, handleLikeClick } from '../components/card';
 import { openPopup, hidePopup, initPopupCloseEvents } from '../components/modal';
-import logo from '../images/logo.svg';
-import avatar from '../images/avatar.jpg';
-
+import { enableValidation, clearValidation } from '../components/validation';
 
 // @todo: DOM узлы
 const cardsListElement = document.querySelector('.places__list');
@@ -12,6 +10,7 @@ const popupEdit = document.querySelector('.popup_type_edit');
 const popupAddCard = document.querySelector('.popup_type_new-card');
 const popupImage = document.querySelector('.popup_type_image');
 const formEditProfile = document.querySelector('.popup__form[name="edit-profile"]');
+const formNewPlace = document.querySelector('.popup__form[name="new-place"]');
 const formAddCard = document.querySelector('.popup_type_new-card .popup__form');
 const btnEditProfile = document.querySelector('.profile__edit-button');
 const btnAddCard = document.querySelector('.profile__add-button');
@@ -43,6 +42,7 @@ const jobInput = formEditProfile.querySelector('.popup__input_type_description')
 const openEditPopup = () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
+  clearValidation(formEditProfile, validationConfig);
   openPopup(popupEdit);
 };
 
@@ -61,6 +61,7 @@ formEditProfile.addEventListener('submit', handleEditFormSubmit);
 // @todo: Открытие попапа добавления карточки
 const openAddCardPopup = () => {
   formAddCard.reset();
+  clearValidation(formNewPlace, validationConfig);
   openPopup(popupAddCard);
 };
 
@@ -89,3 +90,60 @@ formAddCard.addEventListener('submit', handleAddCardSubmit);
 
 // @todo: Закрытие попапов
 initPopupCloseEvents();
+
+// Объект с настройками валидации
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+};
+
+
+// Включение валидации для всех форм
+enableValidation(validationConfig);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
