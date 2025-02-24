@@ -14,7 +14,10 @@
   </header>
   <main class="content">
     <section class="profile page__section">
-      <div class="profile__image" style="background-image: url('<%= require('./images/avatar.jpg') %>');"></div>
+      <div class="profile__image" style="background-image: url('<%= require('./images/avatar.jpg') %>');">
+        <div class="profile__avatar-edit-icon" style="background-image: url('<%= require('./images/edit-icon.svg') %>');">
+        </div>
+      </div>      
       <div class="profile__info">
         <h1 class="profile__title">Жак-Ив Кусто</h1>
         <button class="profile__edit-button" type="button"></button>
@@ -32,6 +35,7 @@
       © 2021 Mesto Russia
     </p>
   </footer>
+  <!-- Попап редактирования профиля -->
   <div class="popup popup_type_edit">
     <div class="popup__content">
       <button type="button" class="popup__close"></button>
@@ -70,6 +74,7 @@
       
     </div>
   </div>
+  <!-- Попап добавления карточки -->
   <div class="popup popup_type_new-card">
     <div class="popup__content">
       <button type="button" class="popup__close"></button>
@@ -104,6 +109,7 @@
       
     </div>
   </div>
+  <!-- Попап открытия изображения -->
   <div class="popup popup_type_image">
     <div class="popup__content popup__content_content_image">
       <button type="button" class="popup__close"></button>
@@ -113,6 +119,31 @@
   </div>
 </div>
 
+<!-- Попап для обновления аватара -->
+<div class="popup popup_type_edit-avatar">
+  <div class="popup__content popup__content-edit-avatar">
+    <button type="button" class="popup__close"></button>
+    <h3 class="popup__title">Обновить аватар</h3>
+    <form class="popup__form popup__form-edit-avatar" name="edit-avatar" novalidate>
+      <label class="popup__field">
+        <input 
+          type="url"
+          name="avatar"
+          class="popup__input popup__input_type_avatar-link"
+          placeholder="Ссылка на новый аватар"
+          required
+          pattern="https?:\/\/.*\.(?:png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF)$"
+          data-error-message="Введите корректный URL изображения (png, jpg, jpeg или gif)"
+        >
+        <span class="popup__input-error popup__input-error_type_avatar"></span>
+      </label>
+      <button type="submit" class="popup__button button">Сохранить</button>
+    </form>
+  </div>
+</div>
+
+
+<!-- Строение карточки -->
 <template id="card-template">
   <li class="places__item card">
     <img class="card__image" src="" alt="" />
@@ -120,7 +151,10 @@
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+      <div class="card__like">
+        <button type="button" class="card__like-button"></button>
+        <span class="card__like-count">0</span>
+      </div>
     </div>
   </li>
 </template>
