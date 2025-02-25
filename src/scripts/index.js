@@ -191,6 +191,8 @@ initPopupCloseEvents();
 enableValidation(validationConfig);
 
 
+
+
 // @todo: Загрузка данных с сервера
 Promise.all([getUserInfo(), getInitialCards()])
   .then(([userData, cards]) => {
