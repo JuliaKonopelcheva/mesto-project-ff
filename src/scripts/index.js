@@ -21,8 +21,6 @@ const validationConfig = {
   errorClass: 'popup__input-error_active'
 };
 
-
-
 // @todo: DOM узлы
 let userId;
 const cardsListElement = document.querySelector('.places__list');
