@@ -1,6 +1,6 @@
 # Проектная работа Mesto
 
-### Проект опубликован на GitHub Pages и доступен по ссылке: [https://juliakonopelcheva.github.io/mesto-project-ff/]
+**Проект опубликован на GitHub Pages и доступен по ссылке: https://juliakonopelcheva.github.io/mesto-project-ff/**
 
 **Mesto** — интерактивная страница, где пользователи могут добавлять фотографии, удалять их и ставить лайки. Этот проект является итогом серии спринтов, в ходе которых были реализованы:
 - создание и удаление карточек,
@@ -56,7 +56,7 @@
 
 ---
 
-### Ссылка на https://github.com/ [https://github.com/JuliaKonopelcheva/mesto-project-ff]
+**Ссылка на github: https://github.com/JuliaKonopelcheva/mesto-project-ff**
 
 
 
