@@ -11,6 +11,17 @@ import {
   updateAvatar
 } from '../components/api';
 
+// Объект с настройками валидации
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+};
+
+
 
 // @todo: DOM узлы
 let userId;
@@ -24,10 +35,30 @@ const formAddCard = document.querySelector('.popup_type_new-card .popup__form');
 const btnEditProfile = document.querySelector('.profile__edit-button');
 const btnAddCard = document.querySelector('.profile__add-button');
 const profileAvatar = document.querySelector('.profile__image');
+const submitEditButton = formEditProfile.querySelector('button[type="submit"]');
 
-// @todo: Попап с изображением
+// @todo: DOM узлы для попапа с изображением
 const popupImageElement = popupImage.querySelector('.popup__image');
 const popupCaption = popupImage.querySelector('.popup__caption');
+
+// @todo: DOM узлы для редактирования профиля
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
+const profileImage = document.querySelector('.profile__image');
+const nameInput = formEditProfile.querySelector('.popup__input_type_name');
+const jobInput = formEditProfile.querySelector('.popup__input_type_description');
+
+// @todo: DOM узлы для добавления новой карточки
+const cardNameInput = formAddCard.querySelector('.popup__input_type_card-name');
+const cardLinkInput = formAddCard.querySelector('.popup__input_type_url');
+
+// @todo: DOM узлы для обновления аватара
+const popupEditAvatar = document.querySelector('.popup_type_edit-avatar');
+const formEditAvatar = popupEditAvatar.querySelector('.popup__form');
+const avatarInput = formEditAvatar.querySelector('.popup__input_type_avatar-link');
+
+
+
 
 // @todo: Открытие попапа с изображением
 const openImagePopup = (cardData) => {
@@ -37,21 +68,9 @@ const openImagePopup = (cardData) => {
   openPopup(popupImage);
 };
 
-// // @todo: Вывести карточки на страницу
-// initialCards.forEach((cardData) => {
-//   const cardElement = addCard(cardData, deleteCard, handleLikeClick, openImagePopup);
-//   cardsListElement.append(cardElement);
-// });
-
 
 
 // @todo: Открытие попапа редактирования профиля
-const profileTitle = document.querySelector('.profile__title');
-const profileDescription = document.querySelector('.profile__description');
-const profileImage = document.querySelector('.profile__image');
-const nameInput = formEditProfile.querySelector('.popup__input_type_name');
-const jobInput = formEditProfile.querySelector('.popup__input_type_description');
-
 const openEditPopup = () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
@@ -67,7 +86,7 @@ const handleEditFormSubmit = (evt) => {
   const nameValue = nameInput.value;
   const aboutValue = jobInput.value;
 
-  evt.submitter.textContent = 'Сохранение...'
+  submitEditButton.textContent = 'Сохранение...';
 
   updateUserInfo(nameValue, aboutValue)
   .then((res) => {
@@ -79,7 +98,7 @@ const handleEditFormSubmit = (evt) => {
     console.log(`Ошибка при обновлении профиля: ${err}`);
   })
   .finally(() => {
-    evt.submitter.textContent = 'Сохранить';
+    submitEditButton.textContent = 'Сохранить';
   });
 };
 
@@ -100,16 +119,13 @@ btnAddCard.addEventListener('click', openAddCardPopup);
 
 
 // @todo: Обработчик события submit (сохранение новой карточки на сервер)
-const cardNameInput = formAddCard.querySelector('.popup__input_type_card-name');
-const cardLinkInput = formAddCard.querySelector('.popup__input_type_url');
-
 const handleAddCardSubmit = (evt) => {
   evt.preventDefault();
 
   const nameValue = cardNameInput.value;
   const linkValue = cardLinkInput.value;
 
-  evt.submitter.textContent = 'Сохранение...';
+  submitEditButton.textContent = 'Сохранение...';
 
   addNewCard(nameValue, linkValue)
     .then((res) => {
@@ -129,17 +145,15 @@ const handleAddCardSubmit = (evt) => {
       console.log(`Ошибка при добавлении карточки: ${err}`);
     })
     .finally(() => {
-      evt.submitter.textContent = 'Сохранить';
+      submitEditButton.textContent = 'Сохранить';
     });
 };
 
 formAddCard.addEventListener('submit', handleAddCardSubmit);
 
-// @todo: Открытие попапа обновления аватара
-const popupEditAvatar = document.querySelector('.popup_type_edit-avatar');
-const formEditAvatar = popupEditAvatar.querySelector('.popup__form');
-const avatarInput = formEditAvatar.querySelector('.popup__input_type_avatar-link');
 
+
+// @todo: Открытие попапа обновления аватара
 profileAvatar.addEventListener('click', () => {
   formEditAvatar.reset();
   clearValidation(formEditAvatar, validationConfig);
@@ -152,7 +166,7 @@ formEditAvatar.addEventListener('submit', (evt) => {
 
   const newAvatarLink = avatarInput.value;
 
-  evt.submitter.textContent = 'Сохранение...';
+  submitEditButton.textContent = 'Сохранение...';
 
   updateAvatar(newAvatarLink)
     .then((res) => {
@@ -163,11 +177,9 @@ formEditAvatar.addEventListener('submit', (evt) => {
       console.log(`Ошибка при обновлении аватара: ${err}`);
     })
     .finally(() => {
-      evt.submitter.textContent = 'Сохранить';
+      submitEditButton.textContent = 'Сохранить';
     });
 });
-
-
 
 
 
@@ -175,25 +187,11 @@ formEditAvatar.addEventListener('submit', (evt) => {
 initPopupCloseEvents();
 
 
-
-// Объект с настройками валидации
-const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_inactive',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'
-};
-
 // Включение валидации для всех форм
 enableValidation(validationConfig);
 
 
-
-
-
-
+// @todo: Загрузка данных с сервера
 Promise.all([getUserInfo(), getInitialCards()])
   .then(([userData, cards]) => {
 
@@ -207,7 +205,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     // Перебор массива карточек с сервера и добавление в DOM
     cards.forEach((cardData) => {
       const cardElement = addCard(
-        cardData,           // данные карточки { name, link, _id, owner, ... }
+        cardData,           // данные карточки
         deleteCard,         // функция удаления (из card.js)
         handleLikeClick,    // функция лайка (из card.js)
         openImagePopup,      // функция для клика по картинке (из index.js)
@@ -219,48 +217,4 @@ Promise.all([getUserInfo(), getInitialCards()])
   .catch((err) => {
     console.log(`Ошибка при загрузке начальных данных: ${err}`);
   });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

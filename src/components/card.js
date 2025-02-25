@@ -53,10 +53,14 @@ export const addCard = (
 };
 
 
+
+
 // @todo: Функция удаления карточки
 export const deleteCard = (cardElement) => {
   cardElement.remove();
 };
+
+
 
 // @todo: Функция лайка карточки
 export const handleLikeClick = (cardData, likeButtonElement, likeCountElement) => {

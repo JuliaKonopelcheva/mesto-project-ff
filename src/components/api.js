@@ -1,4 +1,3 @@
-// Переменные для быстрой замены данных авторизации
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-33',
   headers: {
