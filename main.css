@@ -1004,6 +1004,12 @@ template {
 .popup__form-edit-avatar {
   margin-top: 54px;
 }
+.popup__content_confirm-delete {
+  min-height: 181px;
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
 .popup {
   font-family: 'Inter', Arial, sans-serif;
   display: none;
