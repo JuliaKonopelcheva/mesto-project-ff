@@ -24,19 +24,14 @@ const closePopupOnEsc = (event) => {
 };
 
 // @todo: Закрытие попапов
-export const initPopupCloseEvents = () => {
-  const popupCloseButtons = document.querySelectorAll('.popup__close');
-  popupCloseButtons.forEach((button) => {
-    button.addEventListener('click', (event) => {
-      hidePopup(event.target.closest('.popup'));
-    });
-  });
+export const addPopupListeners = (popup) => {
+  const closeButton = popup.querySelector('.popup__close');
 
-  document.querySelectorAll('.popup').forEach((popup) => {
-    popup.addEventListener('click', (event) => {
-      event.target === popup 
-      ? hidePopup(popup) 
-      : null;
-    });
+  if (closeButton) {
+    closeButton.addEventListener('click', () => hidePopup(popup));
+  }
+
+  popup.addEventListener('mousedown', (event) => {
+    if (event.target === popup) hidePopup(popup);
   });
 };
