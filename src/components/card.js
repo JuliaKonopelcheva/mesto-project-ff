@@ -1,4 +1,5 @@
 import { likeCard, dislikeCard, deleteCardFromServer } from './api';
+import { openConfirmDeletePopup } from '../scripts/index';
 
 // @todo: Функция создания карточки
 export const addCard = (
@@ -38,14 +39,9 @@ export const addCard = (
   }
 
   deleteButtonElement.addEventListener('click', () => {
-    deleteCardFromServer(cardData._id)
-      .then(() => {
-        deleteCard(cardElement);
-      })
-      .catch((err) => {
-        console.log(`Ошибка при удалении карточки: ${err}`);
-      });
+    openConfirmDeletePopup(cardElement, cardData._id);
   });
+  
 
   cardImageElement.addEventListener('click', () => openImagePopup(cardData));
 
@@ -53,14 +49,10 @@ export const addCard = (
 };
 
 
-
-
 // @todo: Функция удаления карточки
 export const deleteCard = (cardElement) => {
   cardElement.remove();
 };
-
-
 
 // @todo: Функция лайка карточки
 export const handleLikeClick = (cardData, likeButtonElement, likeCountElement) => {

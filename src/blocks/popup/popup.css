@@ -9,6 +9,7 @@
 @import url('./__image/popup__image.css');
 @import url('./__content/popup__content-edit-avatar.css');
 @import url('./__form/popup__form-edit-avatar.css');
+@import url('./__content/popup__content_confirm-delete.css');
 
 .popup {
   font-family: 'Inter', Arial, sans-serif;

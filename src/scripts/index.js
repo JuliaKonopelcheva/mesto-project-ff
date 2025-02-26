@@ -8,7 +8,8 @@ import {
   getInitialCards,
   updateUserInfo,
   addNewCard,
-  updateAvatar
+  updateAvatar,
+  deleteCardFromServer
 } from '../components/api';
 
 // Объект с настройками валидации
@@ -49,6 +50,12 @@ const jobInput = formEditProfile.querySelector('.popup__input_type_description')
 // @todo: DOM узлы для добавления новой карточки
 const cardNameInput = formAddCard.querySelector('.popup__input_type_card-name');
 const cardLinkInput = formAddCard.querySelector('.popup__input_type_url');
+
+// @todo: DOM узлы для подтверждения удаления карточки
+const popupConfirmDelete = document.querySelector('.popup_type_confirm-delete');
+const confirmDeleteButton = popupConfirmDelete.querySelector('.popup__button_type_confirm');
+let cardToDelete = null; // Переменная для хранения удаляемой карточки
+
 
 // @todo: DOM узлы для обновления аватара
 const popupEditAvatar = document.querySelector('.popup_type_edit-avatar');
@@ -148,6 +155,32 @@ const handleAddCardSubmit = (evt) => {
 };
 
 formAddCard.addEventListener('submit', handleAddCardSubmit);
+
+
+
+// @todo: Открытие попапа подтверждения удаления карточки
+export const openConfirmDeletePopup = (cardElement, cardId) => {
+  cardToDelete = { cardElement, cardId };
+  openPopup(popupConfirmDelete);
+};
+
+// @todo: Обработчик события клика при подтвержении удаления карточки
+confirmDeleteButton.addEventListener('click', () => {
+  if (cardToDelete) {
+    confirmDeleteButton.textContent = 'Удаление...';
+    deleteCardFromServer(cardToDelete.cardId)
+      .then(() => {
+        deleteCard(cardToDelete.cardElement);
+        hidePopup(popupConfirmDelete);
+      })
+      .catch((err) => {
+        console.log(`Ошибка при удалении карточки: ${err}`);
+      })
+      .finally(() => {
+        confirmDeleteButton.textContent = 'Удалено'
+      });
+  }
+});
 
 
 
