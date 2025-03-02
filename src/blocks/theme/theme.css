@@ -1,0 +1,30 @@
+/* Темная тема (по умолчанию) */
+.dark-theme {
+  background-color: #000;
+  color: #ffffff;
+}
+
+.dark-theme .header,
+.dark-theme .profile,
+.dark-theme .places,
+.dark-theme .footer {
+  background-color: #000;
+}
+
+/* Светлая тема */
+.light-theme {
+  background-color: #f5efe8;
+  color: #000000;
+}
+
+.light-theme .header,
+.light-theme .profile,
+.light-theme .places,
+.light-theme .footer {
+  background-color: #f5efe8;
+}
+
+/* Анимация плавного перехода */
+body {
+  transition: background-color 0.3s, color 0.3s;
+}

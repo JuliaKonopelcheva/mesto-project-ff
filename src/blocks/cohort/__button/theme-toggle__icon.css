@@ -1,0 +1,47 @@
+/* Переключатель темы */
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 2px solid #fff;
+
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  opacity: 0.6;
+}
+
+.theme-toggle__icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Светлая тема */
+.light-theme {
+  background-color: #fff;
+  color: #000;
+}
+
+.light-theme .theme-toggle {
+  border: 2px solid #000;
+}
+
+.light-theme .theme-toggle__icon {
+  content: url("../../../images/sun_line_icon_235554.svg");
+}
+
+/* Темная тема */
+.dark-theme {
+  background-color: #121212;
+  color: #fff;
+}
+
+/* Анимация переключения темы */
+.theme-transition {
+  transition: background-color 0.5s, color 0.5s;
+}

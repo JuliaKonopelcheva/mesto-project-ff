@@ -33,6 +33,18 @@ export const addCard = (
     handleLikeClick(cardData, likeButtonElement, likeCountElement);
   });
 
+  // Отключаю кнопку лайка, если пользователь не авторизован
+  if (!userId) {
+    likeButtonElement.style.pointerEvents = 'none'; // Отключаем клики
+    likeButtonElement.style.opacity = '0.5'; // Делаем визуально неактивной
+  } else {
+    likeButtonElement.addEventListener('click', () => {
+      handleLikeClick(cardData, likeButtonElement, likeCountElement);
+    });
+  }
+
+
+
   // Скрываю корзину, если карточка добавлена не текущим пользователем
   if (cardData.owner._id !== userId) {
     deleteButtonElement.style.display = 'none';

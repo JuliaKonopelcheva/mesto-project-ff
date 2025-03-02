@@ -1,0 +1,38 @@
+.cohort__logout-button {
+  width: 70px;
+  height: 40px;
+  background: transparent url("../../../images/log_out_icon_light.svg") center no-repeat;
+  background-size: 22px;
+  border-radius: 2px;
+  border: 2px solid #fff;
+  transition: 0.3s;
+  cursor: pointer;
+  margin-left: auto;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cohort__logout-button:hover {
+  opacity: 0.6;
+}
+
+/* Медиа-запросы для адаптации */
+@media screen and (max-width: 740px) {
+  .cohort__logout-button {
+    width: 40px;
+    height: 40px;
+    font-size: 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .cohort__logout-button {
+    width: 40px;
+    height: 40px;
+  }
+}

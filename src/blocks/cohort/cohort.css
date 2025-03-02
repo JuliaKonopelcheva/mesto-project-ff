@@ -1,0 +1,54 @@
+@import url('./__title/cohort__title.css');
+@import url('./__image/cohort__image.css');
+@import url('./__description/cohort__description.css');
+@import url('./__button/cohort__auth-button.css');
+@import url('./__button/cohort__logout-button.css');
+@import url('./__button/cohort__buttons.css');
+@import url('./__button/theme-toggle__icon.css');
+
+.cohort {
+  font-family: 'Inter', Arial, sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 36px 0;
+  gap: 10px;
+}
+
+.cohort__container {
+  display: flex;
+  gap: 15px;
+}
+
+.cohort::before {
+  content: '';
+  width: 100%;
+  height: 1px;
+  opacity: 0.7;
+  background: #545454;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%);
+  bottom: 0;
+}
+
+@media screen and (max-width: 480px) {
+  .cohort {
+    padding: 15px 0;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .cohort__container {
+    padding: 15px 0;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+}

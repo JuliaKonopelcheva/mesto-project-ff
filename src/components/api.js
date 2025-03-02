@@ -1,10 +1,11 @@
-const config = {
+export const config = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-33',
   headers: {
-    authorization: 'e9c36c88-ea0b-42d7-9bce-1a792a146069',
+    authorization: localStorage.getItem('authToken') || '',
     'Content-Type': 'application/json'
   }
 };
+
 
 // Функция для проверки ответа сервера
 const checkResponse = (res) => {
@@ -27,14 +28,18 @@ export const getUserInfo = () => {
   
 // Получение начальных карточек с сервера
 export const getInitialCards = () => {
+  const token = localStorage.getItem('authToken') || 'e9c36c88-ea0b-42d7-9bce-1a792a146069'; // Гостевой токен
+
   return fetch(`${config.baseUrl}/cards`, {
     method: 'GET',
     headers: {
-      authorization: config.headers.authorization
+      authorization: token, // Используем токен пользователя или гостевой
+      'Content-Type': 'application/json'
     }
   })
-    .then(checkResponse);
+  .then(checkResponse);
 };
+
 
 // Редактирование профиля
 export const updateUserInfo = (name, about) => {

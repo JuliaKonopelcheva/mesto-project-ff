@@ -1,0 +1,10 @@
+.popup__content_auth {
+  min-height: 272px;
+}
+
+
+@media screen and (max-width: 480px) {
+  .popup__content_auth {
+    min-height: 180px;
+}
+}

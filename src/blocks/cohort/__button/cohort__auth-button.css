@@ -1,0 +1,38 @@
+.cohort__auth-button {
+  width: 70px;
+  height: 40px;
+  background: transparent url("../../../images/entrance_icon.svg") center no-repeat;
+  background-size: 22px;
+  border-radius: 2px;
+  border: 2px solid #fff;
+  transition: 0.3s;
+  cursor: pointer;
+  margin-left: auto;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Отступ между иконкой и текстом */
+}
+
+.cohort__auth-button:hover {
+  opacity: 0.6;
+}
+
+/* Медиа-запросы для адаптации */
+@media screen and (max-width: 740px) {
+  .cohort__auth-button {
+    width: 40px;
+    height: 40px;
+    font-size: 0; /* Скрываем текст на маленьких экранах */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .cohort__auth-button {
+    width: 40px;
+    height: 40px;
+  }
+}

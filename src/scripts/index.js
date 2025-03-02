@@ -9,8 +9,11 @@ import {
   updateUserInfo,
   addNewCard,
   updateAvatar,
-  deleteCardFromServer
+  deleteCardFromServer,
+  config
 } from '../components/api';
+import '../components/theme';
+
 
 // Объект с настройками валидации
 const validationConfig = {
@@ -66,6 +69,14 @@ const submitAddCardButton = formAddCard.querySelector('button[type="submit"]');
 const submitEditButton = formEditProfile.querySelector('button[type="submit"]');
 const submitEditAvatarButton = formEditAvatar.querySelector('button[type="submit"]');
 
+// @todo: DOM узлы для авторизации
+const profileSection = document.querySelector('.profile');
+const authPopup = document.querySelector('.popup_type_auth');
+const authButton = document.querySelector('.cohort__auth-button');
+const authForm = document.querySelector('.popup__form-auth');
+const authInput = authForm.querySelector('.popup__input_type_auth-token');
+const logoutButton = document.querySelector('.cohort__logout-button');
+
 
 
 
@@ -77,6 +88,10 @@ const openImagePopup = (cardData) => {
   openPopup(popupImage);
 };
 
+// @todo: Отображение профиля
+const updateProfileVisibility = (isLoggedIn) => {
+  profileSection.classList.toggle('profile_hidden', !isLoggedIn);
+};
 
 
 // @todo: Открытие попапа редактирования профиля
@@ -220,6 +235,126 @@ formEditAvatar.addEventListener('submit', (evt) => {
 });
 
 
+// Функция открытия попапа авторизации
+const openAuthPopup = () => {
+  authForm.reset(); // Очищаем поле при открытии
+  clearValidation(authForm, validationConfig); // Очищаем валидацию
+  openPopup(authPopup);
+};
+
+
+
+
+
+
+
+
+
+
+
+//  Авторизация
+const handleAuthSubmit = (evt) => {
+  evt.preventDefault();
+  const token = authInput.value.trim();
+  if (!token) return console.log('Ошибка: Токен не может быть пустым!');
+
+  localStorage.setItem('authToken', token);
+  checkAuthStatus();
+  hidePopup(authPopup);
+};
+authButton.addEventListener('click', () => openPopup(authPopup));
+authForm.addEventListener('submit', handleAuthSubmit);
+
+//  Проверка авторизации
+const checkAuthStatus = () => {
+  const storedToken = localStorage.getItem('authToken');
+  
+  if (storedToken) {
+    config.headers.authorization = storedToken;
+    authButton.style.display = 'none';
+    logoutButton.style.display = 'block';
+    logoutButton.classList.add('cohort__logout-button');
+
+    
+    updateProfileVisibility(true);
+
+    getUserInfo()
+      .then((userData) => {
+        userId = userData._id;
+        profileTitle.textContent = userData.name;
+        profileDescription.textContent = userData.about;
+        profileAvatar.style.backgroundImage = `url('${userData.avatar}')`;
+        loadCards();
+      })
+      .catch((err) => console.log(`Ошибка при загрузке профиля: ${err}`));
+  } else {
+    authButton.style.display = 'block';
+    logoutButton.style.display = 'none';
+    updateProfileVisibility(false);
+  }
+
+  // Загружаем карточки всегда
+  loadCards();
+};
+
+
+const loadCards = () => {
+  getInitialCards()
+    .then((cards) => {
+      cardsListElement.innerHTML = ''; // Очищаем карточки перед загрузкой
+
+      cards.forEach((cardData) => {
+        const cardElement = addCard(
+          cardData,
+          deleteCard,
+          handleLikeClick,
+          openImagePopup,
+          openConfirmDeletePopup,
+          userId // userId может быть `undefined`, если нет авторизации
+        );
+        cardsListElement.append(cardElement);
+      });
+    })
+    .catch((err) => {
+      console.log(`Ошибка при загрузке карточек: ${err}`);
+    });
+};
+
+
+
+
+
+// Выход из аккаунта
+const logout = () => {
+  localStorage.removeItem('authToken');
+  config.headers.authorization = '';
+  authButton.style.display = 'block';
+  logoutButton.style.display = 'none';
+
+  userId = null;
+  profileTitle.textContent = 'Имя';
+  profileDescription.textContent = 'Описание';
+  profileAvatar.style.backgroundImage = '';
+  cardsListElement.innerHTML = '';
+
+  updateProfileVisibility(false);
+
+  loadCards();
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // @todo: Закрытие попапов
 document.querySelectorAll('.popup').forEach((popup) => {
@@ -234,30 +369,43 @@ enableValidation(validationConfig);
 
 
 // @todo: Загрузка данных с сервера
-Promise.all([getUserInfo(), getInitialCards()])
-  .then(([userData, cards]) => {
+// Функция загрузки данных пользователя и карточек
+const loadUserData = () => {
+  Promise.all([getUserInfo(), getInitialCards()])
+    .then(([userData, cards]) => {
+      userId = userData._id;
 
-    userId = userData._id;
+      // Заполняем данные профиля
+      profileTitle.textContent = userData.name;
+      profileDescription.textContent = userData.about;
+      profileAvatar.style.backgroundImage = `url('${userData.avatar}')`;
 
-    // Добавление данных пользователя в профиль
-    profileTitle.textContent = userData.name;
-    profileDescription.textContent = userData.about;
-    profileAvatar.style.backgroundImage = `url('${userData.avatar}')`;
+      // Очищаем список карточек перед загрузкой
+      cardsListElement.innerHTML = '';
 
-    // Перебор массива карточек с сервера и добавление в DOM
-    cards.forEach((cardData) => {
-      const cardElement = addCard(
-        cardData,           // данные карточки
-        deleteCard,         // функция удаления (из card.js)
-        handleLikeClick,    // функция лайка (из card.js)
-        openImagePopup,      // функция для клика по картинке (из index.js)
-        openConfirmDeletePopup,
-        userId
-      );
-      cardsListElement.append(cardElement);
+      // Добавляем карточки
+      cards.forEach((cardData) => {
+        const cardElement = addCard(
+          cardData,
+          deleteCard,
+          handleLikeClick,
+          openImagePopup,
+          openConfirmDeletePopup,
+          userId
+        );
+        cardsListElement.append(cardElement);
+      });
+    })
+    .catch((err) => {
+      console.log(`Ошибка при загрузке данных: ${err}`);
     });
-  })
-  .catch((err) => {
-    console.log(`Ошибка при загрузке начальных данных: ${err}`);
-  });
+};
+
+// Добавляем обработчики
+authButton.addEventListener('click', openAuthPopup);
+authForm.addEventListener('submit', handleAuthSubmit);
+
+// Проверяем авторизацию при загрузке страницы
+checkAuthStatus();
+logoutButton.addEventListener('click', logout);
 
